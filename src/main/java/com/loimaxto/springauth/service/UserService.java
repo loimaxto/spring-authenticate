@@ -2,7 +2,6 @@ package com.loimaxto.springauth.service;
 
 import com.loimaxto.springauth.model.User;
 import com.loimaxto.springauth.repository.UserRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -13,11 +12,13 @@ import java.util.Optional;
 @Transactional
 public class UserService {
     
-    @Autowired
-    private UserRepository userRepository;
+    private final UserRepository userRepository;
+    private final PasswordEncoder passwordEncoder;
     
-    @Autowired
-    private PasswordEncoder passwordEncoder;
+    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder) {
+        this.userRepository = userRepository;
+        this.passwordEncoder = passwordEncoder;
+    }
     
     public User registerNewUser(String username, String password, String email) {
         if (userRepository.existsByUsername(username)) {
